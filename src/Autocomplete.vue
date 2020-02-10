@@ -70,6 +70,7 @@ export default {
 
       this.inputElement.focus();
     },
+
     updateItems () {
       this.$emit('update-items', this.searchText)
     },
@@ -84,7 +85,10 @@ export default {
 
     onFocus () {
       this.$emit('focus', this.searchText)
+      
+      if (this.hasItems) {
       this.showList = true
+      }
     },
 
     onBlur () {
