@@ -111,6 +111,12 @@ export default {
     },
 
     onKeyUp (e) {
+      if (!this.showList || !this.hasItems) {
+        return;
+      }
+
+      e.preventDefault();
+      
       if (this.cursor > -1) {
         this.cursor--
         this.itemView(this.$el.getElementsByClassName('v-autocomplete-list-item')[this.cursor])
@@ -118,6 +124,12 @@ export default {
     },
 
     onKeyDown (e) {
+      if (!this.showList || !this.hasItems) {
+        return;
+      }
+
+      e.preventDefault();
+
       if (this.cursor < this.internalItems.length) {
         this.cursor++
         this.itemView(this.$el.getElementsByClassName('v-autocomplete-list-item')[this.cursor])
