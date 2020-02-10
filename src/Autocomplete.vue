@@ -5,9 +5,9 @@
             :class="inputAttrs.class || inputClass"
             :placeholder="inputAttrs.placeholder || placeholder"
             :disabled="inputAttrs.disabled || disabled"
-            @blur="blur" @focus="focus" @input="inputChange"
-            @keydown.enter="keyEnter" @keydown.tab="keyEnter" 
-            @keydown.up="keyUp" @keydown.down="keyDown">
+            @blur="onBlur" @focus="onFocus" @input="onInputChange"
+            @keydown.enter="onKeyEnter" @keydown.tab="onKeyEnter" 
+            @keydown.up="onKeyUp" @keydown.down="onKeyDown" 
     </div>
     <div class="v-autocomplete-list" v-if="show">
       <div class="v-autocomplete-list-item" v-for="item, i in internalItems" @click="onClickItem(item)"
@@ -58,7 +58,11 @@ export default {
     }
   },
   methods: {
-    inputChange () {
+    updateItems () {
+      this.$emit('update-items', this.searchText)
+    },
+
+    onInputChange () {
       this.showList = true
       this.cursor = -1
       this.onSelectItem(undefined)
@@ -66,16 +70,12 @@ export default {
       this.$emit('change', this.searchText)
     },
 
-    updateItems () {
-      this.$emit('update-items', this.searchText)
-    },
-
-    focus () {
+    onFocus () {
       this.$emit('focus', this.searchText)
       this.showList = true
     },
 
-    blur () {
+    onBlur () {
       this.$emit('blur', this.searchText)
       setTimeout( () => this.showList = false, 200)
     },
@@ -98,14 +98,14 @@ export default {
       return 1 == this.internalItems.length && value == this.internalItems[0]
     },
 
-    keyUp (e) {
+    onKeyUp (e) {
       if (this.cursor > -1) {
         this.cursor--
         this.itemView(this.$el.getElementsByClassName('v-autocomplete-list-item')[this.cursor])
       }
     },
 
-    keyDown (e) {
+    onKeyDown (e) {
       if (this.cursor < this.internalItems.length) {
         this.cursor++
         this.itemView(this.$el.getElementsByClassName('v-autocomplete-list-item')[this.cursor])
@@ -132,7 +132,7 @@ export default {
         }       
       },
 
-    keyEnter (e) {
+    onKeyEnter (e) {
       if (this.showList && this.internalItems[this.cursor]) {
         this.onSelectItem(this.internalItems[this.cursor])
         this.showList = false
