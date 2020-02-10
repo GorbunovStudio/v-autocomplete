@@ -2,6 +2,7 @@
   <div class="v-autocomplete">
     <div class="v-autocomplete-input-group" :class="{'v-autocomplete-selected': value}">
       <input type="search" v-model="searchText" v-bind="inputAttrs"
+            ref="input"
             :class="inputAttrs.class || inputClass"
             :placeholder="inputAttrs.placeholder || placeholder"
             :disabled="inputAttrs.disabled || disabled"
@@ -46,7 +47,8 @@ export default {
       searchText: '',
       showList: false,
       cursor: -1,
-      internalItems: this.items || []
+      internalItems: this.items || [],
+      inputElement: undefined,
     }
   },
   computed: {
@@ -57,7 +59,17 @@ export default {
       return (this.showList && this.hasItems) || this.keepOpen
     }
   },
+  mounted() {
+    this.inputElement = this.$refs["input"];
+  },
   methods: {
+    focus() {
+      if (!this.inputElement) {
+        return;
+      }
+
+      this.inputElement.focus();
+    },
     updateItems () {
       this.$emit('update-items', this.searchText)
     },
