@@ -78,7 +78,10 @@ export default {
     onInputChange () {
       this.showList = true
       this.cursor = -1
-      this.onSelectItem(undefined)
+      if (!this.searchText) {
+        this.onSelectItem(undefined);
+      }
+
       utils.callUpdateItems(this.searchText, this.updateItems)
       this.$emit('change', this.searchText)
     },
@@ -92,7 +95,8 @@ export default {
     },
 
     onBlur () {
-      this.$emit('blur', this.searchText)
+      this.onValueChanged(this.value);
+      this.$emit('blur');
       setTimeout( () => this.showList = false, 200)
     },
 
@@ -169,6 +173,15 @@ export default {
       }
     },
 
+    onValueChanged(newValue) {
+      this.internalItems = newValue  ? [newValue] : []
+      utils.clearTimeout()
+      this.searchText = this.getLabel(newValue)
+
+      if (!this.isSelectedValue(newValue)) {
+        this.$emit('item-selected', newValue)
+      }
+    }
   },
   created () {
     utils.minLen = this.minLen
@@ -184,13 +197,7 @@ export default {
       }
     },
     value (newValue) {      
-      this.internalItems = newValue != null ? [newValue] : []
-      utils.clearTimeout()
-      this.searchText = this.getLabel(newValue)
-
-      if (!this.isSelectedValue(newValue)) {
-        this.$emit('item-selected', newValue)
-      }
+      this.onValueChanged(newValue);
     }
   }
 }
