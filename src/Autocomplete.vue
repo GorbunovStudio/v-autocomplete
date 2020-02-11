@@ -37,6 +37,7 @@ export default {
     items: Array,
     autoSelectOneItem: { type: Boolean, default: true },
     placeholder: String,
+    isFreeTextAllowed: { type: Boolean, default: false },
     inputClass: {type: String, default: 'v-autocomplete-input'},
     disabled: {type: Boolean, default: false},
     inputAttrs: {type: Object, default: () => {return {}}},
@@ -90,7 +91,7 @@ export default {
       this.$emit('focus', this.searchText)
       
       if (this.hasItems) {
-      this.showList = true
+        this.showList = true
       }
     },
 
@@ -124,7 +125,7 @@ export default {
       }
 
       e.preventDefault();
-      
+
       if (this.cursor > -1) {
         this.cursor--
         this.itemView(this.$el.getElementsByClassName('v-autocomplete-list-item')[this.cursor])
@@ -166,10 +167,11 @@ export default {
 
     onKeyEnter (e) {
       if (this.showList && this.internalItems[this.cursor]) {
-        this.onSelectItem(this.internalItems[this.cursor])
-        this.showList = false
-
-        e.preventDefault();
+        this.onSelectItem(this.internalItems[this.cursor]);
+        this.showList = false;  
+      } else if (this.isFreeTextAllowed) {
+        this.onSelectItem(this.searchText);
+        this.showList = false;
       }
     },
 
