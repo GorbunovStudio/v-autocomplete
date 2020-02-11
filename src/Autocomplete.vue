@@ -8,7 +8,7 @@
             :disabled="inputAttrs.disabled || disabled"
             @blur="onBlur" @focus="onFocus" @input="onInputChange"
             @keydown.enter="onKeyEnter" @keydown.tab="onKeyEnter" 
-            @keydown.up="onKeyUp" @keydown.down="onKeyDown" 
+            @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.esc="onKeyEsc">
     </div>
     <div class="v-autocomplete-list" v-if="show">
       <div class="v-autocomplete-list-item" v-for="item, i in internalItems" @click="onClickItem(item)"
@@ -173,6 +173,12 @@ export default {
       }
     },
 
+    onKeyEsc (e) {
+      e.preventDefault();
+      this.onValueChanged(this.value);
+      this.showList = false;
+    },
+
     onValueChanged(newValue) {
       this.internalItems = newValue  ? [newValue] : []
       utils.clearTimeout()
@@ -182,6 +188,7 @@ export default {
         this.$emit('item-selected', newValue)
       }
     }
+
   },
   created () {
     utils.minLen = this.minLen
