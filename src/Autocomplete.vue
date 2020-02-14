@@ -96,7 +96,12 @@ export default {
     },
 
     onBlur () {
-      this.onValueChanged(this.value);
+      if (!this.isFreeTextAllowed) {
+        this.onValueChanged(this.value);
+      } else {
+        this.onSelectItem(this.searchText);
+      }
+      
       this.$emit('blur');
       setTimeout( () => this.showList = false, 200)
     },
