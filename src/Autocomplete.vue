@@ -11,7 +11,7 @@
             @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.esc="onKeyEsc">
     </div>
     <div class="v-autocomplete-list" v-if="show">
-      <div class="v-autocomplete-list-item" v-for="item, i in internalItems" @mousedown.pevent="onClickItem(item)"
+      <div class="v-autocomplete-list-item" v-for="item, i in internalItems" @mousedown.prevent="onClickItem(item)"
            :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
         <div :is="componentItem" :item="item" :searchText="searchText"></div>
       </div>
