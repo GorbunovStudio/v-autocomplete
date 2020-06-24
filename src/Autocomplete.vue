@@ -41,7 +41,8 @@ export default {
     inputClass: {type: String, default: 'v-autocomplete-input'},
     disabled: {type: Boolean, default: false},
     inputAttrs: {type: Object, default: () => {return {}}},
-    keepOpen: {type: Boolean, default: false}
+    keepOpen: {type: Boolean, default: false},
+    disableFormSubmit: {type: Boolean, default: false},
   },
   data () {
     return {
@@ -172,6 +173,10 @@ export default {
       },
 
     onKeyEnter (e) {
+      if (this.disableFormSubmit) {
+        e.preventDefault();
+      }
+
       if (this.showList && this.internalItems[this.cursor]) {
         this.onSelectItem(this.internalItems[this.cursor]);
         this.showList = false;  
