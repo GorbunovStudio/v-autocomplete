@@ -1,7 +1,8 @@
 declare module "v-autocomplete" {
-  import Vue from "vue";
+  import Vue, { PluginFunction } from "vue";
+
   export default class Autocomplete extends Vue {
-    static install: Vue.PluginFunction<never>;
+    static install: PluginFunction<never>;
 
     focus(): void;
   }
