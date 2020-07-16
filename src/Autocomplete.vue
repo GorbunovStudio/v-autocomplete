@@ -174,7 +174,7 @@ export default {
     },
 
     onKeyEnter (e) {
-      if (this.disableFormSubmit) {
+      if (this.disableFormSubmit && e.keyCode === 13) {
         e.preventDefault();
       }
 
