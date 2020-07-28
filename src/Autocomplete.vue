@@ -32,7 +32,7 @@ export default {
     value: null,
     getLabel: {
       type: Function,
-      default: item => item
+      default: item => (item || '')
     },
     items: Array,
     autoSelectOneItem: { type: Boolean, default: true },
