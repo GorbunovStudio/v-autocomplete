@@ -114,7 +114,7 @@ export default {
     },
 
     onSelectItem (item) {
-        this.searchText = '';
+        this.searchText = this.getLabel(this.value);
         this.$emit('input', item)
         this.$emit('item-selected', item)
     },
